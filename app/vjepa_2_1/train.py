@@ -120,6 +120,10 @@ def main(args, resume_preempt=False):
         embed_dim_encoder = 1408
     elif model_name == "vit_gigantic_xformers":
         embed_dim_encoder = 1664
+    elif model_name == "vit_base":
+        embed_dim_encoder = 768
+    elif model_name == "vit_tiny":
+        embed_dim_encoder = 192
     else:
         print("Model name not recognized :(")
 
@@ -675,7 +679,7 @@ def main(args, resume_preempt=False):
                             return loss
 
                 # Step 1. Forward
-                with torch.cuda.amp.autocast(dtype=dtype, enabled=mixed_precision):
+                with torch.amp.autocast('cuda', dtype=dtype, enabled=mixed_precision):
                     h = forward_target(clips)
                     z_pred, z_context = forward_context(clips)
                     loss = 0

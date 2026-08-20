@@ -1,0 +1,68 @@
+cpus_per_task: 8
+eval_name: video_classification_frozen
+folder: /path/to/model/directory
+mem_per_gpu: 20G
+nodes: 8
+resume_checkpoint: true
+tag: ultrasound-vitt16-384-16x8x3
+tasks_per_node: 8
+num_workers: 8
+experiment:
+  classifier:
+    num_heads: 2
+    num_probe_blocks: 2
+  data:
+    dataset_type: VideoDataset
+    dataset_train: /path/to/training/dataset.csv
+    dataset_val: /path/to/validation/dataset.csv
+    frame_step: 4
+    frames_per_clip: 16
+    num_classes: 5
+    num_segments: 8
+    num_views_per_segment: 3
+    resolution: 384
+  optimization:
+    batch_size: 1
+    multihead_kwargs:
+    - final_lr: 0.0
+      final_weight_decay: 0.01
+      lr: 0.005
+      start_lr: 0.005
+      warmup: 0.0
+      weight_decay: 0.01
+    - final_lr: 0.0
+      final_weight_decay: 0.01
+      lr: 0.003
+      start_lr: 0.003
+      warmup: 0.0
+      weight_decay: 0.01
+    - final_lr: 0.0
+      final_weight_decay: 0.01
+      lr: 0.001
+      start_lr: 0.001
+      warmup: 0.0
+      weight_decay: 0.01
+    - final_lr: 0.0
+      final_weight_decay: 0.01
+      lr: 0.0003
+      start_lr: 0.0003
+      warmup: 0.0
+      weight_decay: 0.01
+    num_epochs: 2
+    use_bfloat16: true
+    use_pos_embed: false
+model_kwargs:
+  checkpoint: /path/to/model/checkpoint.pth.tar
+  module_name: evals.video_classification_frozen.modelcustom.vit_encoder_multiclip
+  pretrain_kwargs:
+    encoder:
+      checkpoint_key: encoder
+      img_temporal_dim_size: 1
+      model_name: vit_tiny
+      patch_size: 16
+      tubelet_size: 2
+      uniform_power: true
+      use_rope: true
+  wrapper_kwargs:
+    max_frames: 128
+    use_pos_embed: false
