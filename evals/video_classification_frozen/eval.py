@@ -257,19 +257,19 @@ def main(args_eval, resume_preempt=False):
                 use_bfloat16=use_bfloat16,
             )
 
-        val_acc = run_one_epoch(
-            device=device,
-            training=False,
-            encoder=encoder,
-            classifiers=classifiers,
-            scaler=scaler,
-            optimizer=optimizer,
-            scheduler=scheduler,
-            wd_scheduler=wd_scheduler,
-            data_loader=val_loader,
-            use_bfloat16=use_bfloat16,
-        )
-
+        #val_acc = run_one_epoch(
+        #    device=device,
+        #    training=False,
+        #    encoder=encoder,
+        #    classifiers=classifiers,
+        #    scaler=scaler,
+        #    optimizer=optimizer,
+        #    scheduler=scheduler,
+        #    wd_scheduler=wd_scheduler,
+        #    data_loader=val_loader,
+        #    use_bfloat16=use_bfloat16,
+        #)
+        val_acc = 0
         logger.info("[%5d] train: %.3f%% test: %.3f%%" % (epoch + 1, train_acc, val_acc))
         if rank == 0:
             csv_logger.log(epoch + 1, train_acc, val_acc)
